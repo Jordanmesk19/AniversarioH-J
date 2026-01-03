@@ -1,0 +1,68 @@
+/* existing styles (if any) */
+:root{
+	--bg: #0b0c10;
+	--text: #f5f5f5;
+	--accent: #80ff66;
+	--nav-size: 80px; /* tamaño botones laterales */
+	--content-width: 1100px;
+	--transition-duration: 600ms;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:Inter,Segoe UI,Arial,Helvetica,sans-serif;color:var(--text);background:var(--bg);}
+
+/* Overlay inicial (pantalla negra) */
+.overlay{
+	position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:40;transition:opacity var(--transition-duration) ease;
+}
+.overlay.fade-out{opacity:0}
+.overlay-content{color:var(--text);text-align:center;padding:24px}
+.overlay-content h1{font-size:clamp(24px,6vw,56px);margin:0 0 8px}
+.overlay-content p{opacity:.85;margin:0 0 18px}
+.btn{background:var(--accent);color:#111;padding:12px 20px;border-radius:10px;border:none;font-weight:600;cursor:pointer}
+
+/* Contenedor principal del carrusel (pantalla completa) */
+.carousel-app{position:fixed;inset:0;display:block;overflow:hidden}
+.slides-container{position:relative;height:100%;width:100%}
+.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transform:scale(1.02);transition:opacity var(--transition-duration) ease,transform var(--transition-duration) ease}
+.slide.active{opacity:1;pointer-events:auto;transform:scale(1)}
+
+/* Inner layout para la imagen y texto */
+.slide-inner{display:flex;align-items:center;gap:40px;max-width:var(--content-width);width:100%;padding:40px}
+.slide-media{flex:1;margin:0}
+.slide-media img{width:100%;height:auto;max-height:70vh;object-fit:cover;border-radius:14px;box-shadow:0 10px 30px rgba(2,6,23,.6)}
+.slide-text{flex:1;color:var(--text)}
+.slide-title{font-size:clamp(20px,4vw,44px);margin:0 0 8px}
+.slide-message{font-size:clamp(14px,2vw,18px);margin:0;opacity:.95}
+
+/* Botones de navegación grandes en los bordes */
+.nav-btn{position:fixed;top:50%;transform:translateY(-50%);width:var(--nav-size);height:var(--nav-size);border-radius:50%;background:rgba(0,0,0,.4);backdrop-filter:blur(6px);border:2px solid rgba(255,255,255,.08);color:var(--text);font-size:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:30}
+.nav-btn.prev{left:12px}
+.nav-btn.next{right:12px}
+.nav-btn:active{transform:translateY(-50%) scale(.98)}
+
+/* Indicadores */
+.indicators{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;display:flex;gap:10px;z-index:30}
+.indicator{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.25);border:none}
+.indicator.active{background:var(--accent);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+
+/* Responsive: layout vertical on small screens */
+@media (max-width:900px){
+	.slide-inner{flex-direction:column;padding:20px;gap:18px}
+	.slide-media img{max-height:45vh;width:100%}
+	.nav-btn{width:64px;height:64px;font-size:32px}
+}
+
+/* Accessibility focus */
+.nav-btn:focus,.indicator:focus,.btn:focus{outline:3px solid rgba(255,209,102,.18);outline-offset:3px}
+
+/* Small decorative tweaks */
+.slide-title{letter-spacing:-0.5px}
+
+/* End of styles */
+
+
+#revealBtn:hover {
+	background-color: #f5f5f5;
+}

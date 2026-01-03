@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Aniversario H&J</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="img/l1.png" type="image/x-icon">
+
+</head>
+<body>
+
+    <!-- Pantalla inicial completa negra -->
+    <div id="overlay" class="overlay">
+        <div class="overlay-content">
+            <h1 id="overlayTitle">¡Hola, Hiromy! Un año más, y contando :3</h1>
+            <p id="overlaySubtitle">Esto es para ti, con todo mi cariño</p>
+            <button id="revealBtn" class="btn">Ver nuestro regalo 💝</button>
+        </div>
+    </div>
+
+    <!-- Carrusel a pantalla completa -->
+    <main id="carouselApp" class="carousel-app" aria-hidden="true">
+        <div id="slidesContainer" class="slides-container">
+            <!-- Slides se generan dinámicamente aquí -->
+        </div>
+
+        <!-- Navegación lateral -->
+        <button id="prevBtn" class="nav-btn prev" aria-label="Anterior">‹</button>
+        <button id="nextBtn" class="nav-btn next" aria-label="Siguiente">›</button>
+
+        <!-- Indicadores opcionales -->
+        <div id="indicators" class="indicators" aria-hidden="false"></div>
+    </main>
+
+    <!-- Script modular: editar slidesData aquí -->
+    <script type="module">
+        /*
+            slidesData: array editable para personalizar cada diapositiva.
+            Campos por diapositiva: {color, image, title, message, audio}
+            - `color`: color de fondo de la diapositiva (hex, rgb, variable CSS)
+            - `image`: ruta relativa dentro de `img/` (ej. "img/foto1.jpg")
+            - `title`: título o nombre corto
+            - `message`: mensaje descriptivo junto a la imagen
+            - `audio`: ruta relativa a archivo de audio (ej. "audio/sonido1.mp3")
+        */
+        const slidesData = [
+            { color: '#33C809', image: 'img/slide1.jpg', title: ' Las tardes contigo, Hiromy', message: 'Cada día fue mágico hablar contigo, pasar tiempo juntos y reírnos sin parar. Nuestras tardes se volvían especiales gracias a eso, y yo siempre esperaba con alegría ese momento para conversar contigo, algo que llenaba mi corazón por completo', audio: 'audio/track1.mp3' },
+            { color: '#ff7b7b', image: 'img/slide2.jpg', title: 'Única como tú, Hiromy', message: 'Hiromy, para mí eres una persona tan única por el cariño que me das; me hace sentir como el ser más querido. Tu clara preocupación y esfuerzo en nuestra amistad, tu carácter divertido y tierno que me hace reír mucho, y hasta esa terquedad con tus ideas (¡eres una mula! 🐴)… todo eso hace que ame compartir contigo. Eres verdaderamente única para mí', audio: 'audio/track2.mp3' },
+            { color: '#66b3ba', image: 'img/slide3.jpg', title: 'Tu sonrisa ilumina mis días', message: 'Hiromy, adoro tu sonrisa. Cada vez que sonríes y te ríes, me llenas de felicidad. Hacerte reír y sonreír es una de mis actividades favoritas; no importa qué recurso tenga que utilizar. Para mí, ver tu sonrisa y escuchar cómo te ríes hace que cualquier día se vuelva especial y bonito', audio: 'audio/track3.mp3' },
+            { color: '#D1C300', image: 'img/slide4.jpg', title: 'Mi confidente', message: 'Eres una de esas pocas personas en las que puedo confiar mis sentimientos y pensamientos sin reservas. Contigo sé que puedo hablar de cualquier cosa, grande o pequeña, y encontraré siempre un oído atento y un corazón abierto. Gracias, Hiromy, por cada momento de escucha, por tu paciencia y por hacerme sentir tan en confianza a tu lado', audio: 'audio/track4.mp3' },
+            { color: '#C71212', image: 'img/slide5.jpg', title: 'Creo en ti, Hiromy', message: 'Siento tu pasión en cada palabra, Hiromy, cuando me hablas sobre tu carrera. Veo cómo te esfuerzas para seguir adelante, a pesar de estar muy harta de todo. Aunque tú no creas o veas tu propio potencial, yo sí lo veo y lo siento en el corazón. Solo necesitas creer más en ti misma y reconocer tus propios avances', audio: 'audio/track5.mp3' },
+            { color: '#5D0E95', image: 'img/slide6.jpg', title: 'Para mí, eres hermosa', message: 'Aunque tú no te veas así, para mí eres una persona guapa, con una personalidad encantadora y una forma de querer que te hace una chica verdaderamente linda. Me fascinan tus ojos, los encuentro preciosos, ¡y esos cachetes dan unas ganas de pellizcarlos! Eres muy hermosa, corazón', audio: 'audio/track6.mp3' },
+            { color: '#C77C12', image: 'img/slide7.jpg', title: 'Tu amor por las gordas', message: 'El amor que tienes por tus mascotas es muy hermoso, corazón; lo puedo sentir a través de tu trato y de cómo te preocupas por ellas. Espero algún día conocerlas… ¡y confío en que no me muerdan! Jejeje.', audio: 'audio/track7.mp3' },
+            { color: '#148F5A', image: 'img/slide8.jpg', title: 'Nuestros planes', message: 'La verdad, me siento tan emocionado por el día en que por fin nos conozcamos. Hay tantas cosas que quiero hacer contigo: jugar, comer helado y más; ver películas y series; cantar y bailar; ir a la playa, un río o la piscina (¡o todo!). Cada vez que hablamos de ese día se nos ocurren más ideas. Solo sé que será especial, sin importar lo que hagamos… pero lo primero, al vernos, será darnos un abrazo enorme', audio: 'audio/track8.mp3' },
+            { color: '#465C53', image: 'img/slide9.jpg', title: ' Mi soñadora', message: 'Tus sueños me hacen pensar en alguien que quiere conocerlo todo: ver paisajes hermosos, descubrir nuevas culturas y explorar mundos distintos. Eres toda una aventurera. Espero que Venezuela no te decepcione y que, poco a poco, te sientas mejor en este país tan lindo', audio: 'audio/track9.mp3' },
+            { color: '#994D0B', image: 'img/slide10.jpg', title: 'Mi valiente mejor amiga', message: 'Sentir que te subiste a ese lugar sin cuidado me da un poco de miedo, o cuando saltas entre techos para capturar mejor los atardeceres, me hace ver que eres un poco imprudente pero valiente, una chica lista para la aventura y dispuesta a hacer todo por lo que quiere', audio: 'audio/track10.mp3' },
+            { color: '#54061D', image: 'img/slide11.jpg', title: ' El amor a tu familia', message: 'Adoras tanto a tu mamá. Ver cómo te preocupas por ella cada día, cómo estás pendiente de todo, me hace ver lo noble que eres. Aunque a veces te sientas triste por lo que ella te dice, sé en mi corazón que te quiere profundamente y solo deseo lo mejor para ti. De ella he escuchado maravillas: una mujer guerrera, estudiosa, una gran enfermera. Y de tu hermana, sé que también la quieres muchísimo', audio: 'audio/track11.mp3' },
+            { color: '#DE2173', image: 'img/slide12.jpg', title: 'Una niña de corazón', message: 'Eres muy tierna, corazón. No me imagino cómo eras de niña… o no mi niña grande! Jeje. Cómo me hubiera gustado ser tu amigo en esa época, acompañarte y protegerte de cualquier persona con malas intenciones. Podría haberte tenido a ti, ser un amigo auténtico para ti. Pero estamos en el presente, y me esforzaré por ser el mejor amigo que podrías haber tenido', audio: 'audio/track12.mp3'},
+            { color: '#15218E', image: 'img/slide13.jpg', title: 'Mi tesoro', message: 'La verdad, no sé cómo no tienes más amigos. Una persona como tú… me imaginaría que tendría muchos. Alguien como tú es única, y por eso pienso que eres mi tesoro. Tu amistad es una de las cosas más valiosas que tengo: una mejor amiga que me ama de corazón y está dispuesta a ayudarme en todo. Eso no puede ser menos que un tesoro.', audio: 'audio/track13.mp3' },
+            { color: '#158E3B', image: 'img/slide14.jpg', title: 'Mi propósito contigo', message: 'Este año me he propuesto dar lo mejor de mí para que nuestra amistad crezca más fuerte, que la confianza y el respeto nunca se pierdan, y que te sientas tan querida y valorada como yo me siento a tu lado. Quiero que sepas que eres importante para alguien, que alcances tu mejor versión, y que cuentes siempre conmigo. Porque eso, para mí, es la verdadera amistad.', audio: 'audio/track14.mp3' },
+            { color: '#1F1F1F', image: 'img/slide15.jpg', title: 'Mi mejor amiga', message: 'Este año de amistad, a pesar de los desafíos, los desacuerdos y los momentos bajos, no cambio ni un solo instante de lo vivido a tu lado. Cada segundo contigo ha sido un regalo del tiempo.<br>Ver crecer nuestra amistad, verla florecer incluso cuando no era fácil, me hace prometerme que la protegeré siempre, cueste lo que cueste.<br>Y hoy solo quiero decirte… gracias.<br>Gracias por ser mi mejor amiga.<br>Gracias por quedarte.<br>Gracias por escucharme incluso en silencio.<br>Gracias por tu amabilidad constante.<br>Gracias por esos ánimos que llegaban justo cuando más los necesitaba.<br>Gracias por ser auténticamente tú.<br>Gracias por guiarme con tu consejo.<br>Gracias por aceptarme sin juzgar.<br>Gracias por regalarme tu tiempo.<br>Gracias por confiar en mí.<br>Todo esto, y más, es lo que has puesto en mi vida este año.<br>Por eso, te envío un abrazo fuerte y un beso suave en la frente, llenos de gratitud y cariño.<br>Te quiero mucho. Y te amo con todo el corazón. ❤️', audio: 'audio/track15.mp3' }
+        ];
+
+        // Elementos principales
+        const overlay = document.getElementById('overlay');
+        const revealBtn = document.getElementById('revealBtn');
+        const carouselApp = document.getElementById('carouselApp');
+        const slidesContainer = document.getElementById('slidesContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const indicators = document.getElementById('indicators');
+
+        let current = 0;
+        let audioPlayer = null; // objeto Audio actual
+
+        // Crea los elementos de las diapositivas y los indicadores
+        function buildSlides() {
+            slidesContainer.innerHTML = '';
+            indicators.innerHTML = '';
+
+            slidesData.forEach((s, i) => {
+                const slide = document.createElement('section');
+                slide.className = 'slide';
+                slide.setAttribute('data-index', i);
+                slide.style.background = s.color || 'var(--bg)';
+
+                slide.innerHTML = `
+                    <div class="slide-inner">
+                        <figure class="slide-media">
+                            <img src="${s.image}" alt="${s.title || 'Imagen'}"/>
+                        </figure>
+                        <div class="slide-text">
+                            <h2 class="slide-title">${s.title || ''}</h2>
+                            <p class="slide-message">${s.message || ''}</p>
+                        </div>
+                    </div>
+                `;
+
+                slidesContainer.appendChild(slide);
+
+                // indicador
+                const dot = document.createElement('button');
+                dot.className = 'indicator';
+                dot.setAttribute('aria-label', `Ir a la diapositiva ${i+1}`);
+                dot.addEventListener('click', () => goTo(i));
+                indicators.appendChild(dot);
+            });
+        }
+
+        // Muestra la diapositiva i (ciclo infinito)
+        function showSlide(i) {
+            const slides = slidesContainer.querySelectorAll('.slide');
+            const dots = indicators.querySelectorAll('.indicator');
+
+            if (slides.length === 0) return;
+            const index = ((i % slides.length) + slides.length) % slides.length;
+
+            slides.forEach((el, idx) => {
+                el.classList.toggle('active', idx === index);
+            });
+            dots.forEach((d, idx) => d.classList.toggle('active', idx === index));
+
+            // manejar audio: detener anterior y reproducir el nuevo
+            const slideData = slidesData[index];
+            if (audioPlayer) {
+                audioPlayer.pause();
+                audioPlayer.currentTime = 0;
+            }
+            if (slideData && slideData.audio) {
+                audioPlayer = new Audio(slideData.audio);
+                audioPlayer.loop = true;
+                audioPlayer.play().catch(()=>{
+                    // si el autoplay falla, quedará preparado para play manual
+                });
+            } else {
+                audioPlayer = null;
+            }
+
+            current = index;
+        }
+
+        function next() { showSlide(current + 1); }
+        function prev() { showSlide(current - 1); }
+        function goTo(i) { showSlide(i); }
+
+        // Mostrar carrusel tras pulsación — cuenta como interacción del usuario
+        function revealCarousel() {
+            overlay.classList.add('fade-out');
+            overlay.addEventListener('transitionend', () => {
+                overlay.style.display = 'none';
+                carouselApp.setAttribute('aria-hidden', 'false');
+            }, { once: true });
+            showSlide(0);
+        }
+
+        // Event handlers
+        revealBtn.addEventListener('click', () => revealCarousel());
+        nextBtn.addEventListener('click', () => next());
+        prevBtn.addEventListener('click', () => prev());
+
+        // Navegación con teclado
+        document.addEventListener('keydown', (e) => {
+            if (overlay.style.display === 'none') {
+                if (e.key === 'ArrowRight') next();
+                else if (e.key === 'ArrowLeft') prev();
+            }
+        });
+
+        // Inicializar
+        buildSlides();
+
+        // Comentario: para cambiar slides, editar `slidesData` arriba.
+        // Asegúrate de colocar las imágenes en la carpeta `img/` y los audios en `audio/`.
+    </script>
+</body>
+</html>
